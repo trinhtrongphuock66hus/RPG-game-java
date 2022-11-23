@@ -18,11 +18,14 @@ public class Board extends JPanel implements ActionListener {
     private final int B_WIDTH = 600;
     private final int B_HEIGHT = 581;
     // tốc độ nhân vật
-    private final int DOT_SIZE = 20;
+    private final int DOT_SIZE = 4;
     // tốc độ quái
     private final int DELAY = 30;
     // vị trí nv
     private int x, y;
+    // biến đếm run
+    private int x1, y1;
+    private int x2 = 0;
     // vị trí mũi tên menu
     private int ymn = 180;
     // vị trí quái
@@ -33,6 +36,8 @@ public class Board extends JPanel implements ActionListener {
     // đếm tgian dùng skill
     private int at1 = 0;
     private int at2 = 0;
+    // đếm chạy
+    private int r = 0;
     // biến mở đầu || kết thúc game
     private boolean inGame = true;
     // menu
@@ -44,13 +49,22 @@ public class Board extends JPanel implements ActionListener {
     private boolean bando1 = true;
     private boolean bando2 = false;
     private boolean bando3 = false;
+    // di chuyển
+    private boolean up = true;
+    private boolean down = true;
+    private boolean right1 = true;
+    private boolean left1 = true;
     // tấn công
     private boolean attack1 = false;
     private boolean attack2 = false;
     // nhân vật
     private boolean meliodas = true;
-    private boolean nv2 = false;
-    private boolean nv3 = false;
+    private boolean escanor = false;
+    private boolean diana = false;
+    // nhân vật chạy
+    private boolean run = false;
+    private boolean left = false;
+    private boolean right = false;
     // biến tgian
     private Timer timer;
     // ảnh menu
@@ -68,10 +82,6 @@ public class Board extends JPanel implements ActionListener {
     private Image mainr;
     private Image mainr1;
     private Image mainr2;
-    private Image mainr3;
-    private Image mainr4;
-    private Image mainr5;
-    private Image mainr6;
     // ảnh skill 1
     private Image main11;
     private Image main12;
@@ -137,54 +147,240 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void loadcharacter() {
+        // meliodas
         if (meliodas) {
             // load nhân vật
-            ImageIcon main1 = new ImageIcon("attack/attack1.png");
-            main = main1.getImage();
+            if (right) {
+                ImageIcon main1 = new ImageIcon("attack/attack1.png");
+                main = main1.getImage();
 
-            ImageIcon main0a = new ImageIcon("character/character3.png");
-            main0 = main0a.getImage();
+                ImageIcon main0a = new ImageIcon("character/character3a.png");
+                main0 = main0a.getImage();
+            }
+            if (left) {
+                ImageIcon main1 = new ImageIcon("attack/attack-1.png");
+                main = main1.getImage();
 
+                ImageIcon main0a = new ImageIcon("character/character-3a.png");
+                main0 = main0a.getImage();
+            }
             // load tấn công
-            ImageIcon at1a = new ImageIcon("attack/attack1.png");
-            main11 = at1a.getImage();
+            if (right) {
+                ImageIcon at1a = new ImageIcon("attack/attack1.png");
+                main11 = at1a.getImage();
 
-            ImageIcon at1b = new ImageIcon("attack/attack1a.png");
-            main12 = at1b.getImage();
+                ImageIcon at1b = new ImageIcon("attack/attack1a.png");
+                main12 = at1b.getImage();
 
-            ImageIcon at1c = new ImageIcon("attack/attack1b.png");
-            main13 = at1c.getImage();
+                ImageIcon at1c = new ImageIcon("attack/attack1b.png");
+                main13 = at1c.getImage();
 
-            ImageIcon at2a = new ImageIcon("attack/attack2.png");
-            main21 = at2a.getImage();
+                ImageIcon at2a = new ImageIcon("attack/attack2.png");
+                main21 = at2a.getImage();
 
-            ImageIcon at2b = new ImageIcon("attack/attack2a.png");
-            main22 = at2b.getImage();
+                ImageIcon at2b = new ImageIcon("attack/attack2a.png");
+                main22 = at2b.getImage();
 
-            ImageIcon at2c = new ImageIcon("attack/attack2b.png");
-            main23 = at2c.getImage();
+                ImageIcon at2c = new ImageIcon("attack/attack2b.png");
+                main23 = at2c.getImage();
+            }
+            if (left) {
+                ImageIcon at1a = new ImageIcon("attack/attack-1.png");
+                main11 = at1a.getImage();
 
+                ImageIcon at1b = new ImageIcon("attack/attack-1a.png");
+                main12 = at1b.getImage();
+
+                ImageIcon at1c = new ImageIcon("attack/attack-1b.png");
+                main13 = at1c.getImage();
+
+                ImageIcon at2a = new ImageIcon("attack/attack-2.png");
+                main21 = at2a.getImage();
+
+                ImageIcon at2b = new ImageIcon("attack/attack-2a.png");
+                main22 = at2b.getImage();
+
+                ImageIcon at2c = new ImageIcon("attack/attack-2b.png");
+                main23 = at2c.getImage();
+            }
             // chạy
-            ImageIcon mainra = new ImageIcon("run/run.png");
-            mainr = mainra.getImage();
+            if (right) {
+                ImageIcon mainra = new ImageIcon("run/run.png");
+                mainr = mainra.getImage();
 
-            ImageIcon mainrb = new ImageIcon("run/run1a.png");
-            mainr1 = mainrb.getImage();
+                ImageIcon mainrb = new ImageIcon("run/run1a.png");
+                mainr1 = mainrb.getImage();
 
-            ImageIcon mainrc = new ImageIcon("run/run1b.png");
-            mainr2 = mainrc.getImage();
+                ImageIcon mainrc = new ImageIcon("run/run1b.png");
+                mainr2 = mainrc.getImage();
+            }
+            if (left) {
+                ImageIcon mainra = new ImageIcon("run/run-.png");
+                mainr = mainra.getImage();
 
-            ImageIcon mainrd = new ImageIcon("run/run1c.png");
-            mainr3 = mainrd.getImage();
+                ImageIcon mainrb = new ImageIcon("run/run-1a.png");
+                mainr1 = mainrb.getImage();
 
-            ImageIcon mainre = new ImageIcon("run/run1d.png");
-            mainr4 = mainre.getImage();
+                ImageIcon mainrc = new ImageIcon("run/run-1b.png");
+                mainr2 = mainrc.getImage();
+            }
+        }
+        // escanor
+        if (escanor) {
+            // load nhân vật
+            if (right) {
+                ImageIcon main1 = new ImageIcon("attack/attack3.png");
+                main = main1.getImage();
 
-            ImageIcon mainrf = new ImageIcon("run/run1e.png");
-            mainr5 = mainrf.getImage();
+                ImageIcon main0a = new ImageIcon("character/character1a.png");
+                main0 = main0a.getImage();
+            }
+            if (left) {
+                ImageIcon main1 = new ImageIcon("attack/attack-3.png");
+                main = main1.getImage();
 
-            ImageIcon mainrg = new ImageIcon("run/run1f.png");
-            mainr6 = mainrg.getImage();
+                ImageIcon main0a = new ImageIcon("character/character-1a.png");
+                main0 = main0a.getImage();
+            }
+            // load tấn công
+            if (right) {
+                ImageIcon at1a = new ImageIcon("attack/attack3.png");
+                main11 = at1a.getImage();
+
+                ImageIcon at1b = new ImageIcon("attack/attack3a.png");
+                main12 = at1b.getImage();
+
+                ImageIcon at1c = new ImageIcon("attack/attack3b.png");
+                main13 = at1c.getImage();
+
+                ImageIcon at2a = new ImageIcon("attack/attack4.png");
+                main21 = at2a.getImage();
+
+                ImageIcon at2b = new ImageIcon("attack/attack4a.png");
+                main22 = at2b.getImage();
+
+                ImageIcon at2c = new ImageIcon("attack/attack4b.png");
+                main23 = at2c.getImage();
+            }
+            if (left) {
+                ImageIcon at1a = new ImageIcon("attack/attack-3.png");
+                main11 = at1a.getImage();
+
+                ImageIcon at1b = new ImageIcon("attack/attack-3a.png");
+                main12 = at1b.getImage();
+
+                ImageIcon at1c = new ImageIcon("attack/attack-3b.png");
+                main13 = at1c.getImage();
+
+                ImageIcon at2a = new ImageIcon("attack/attack-4.png");
+                main21 = at2a.getImage();
+
+                ImageIcon at2b = new ImageIcon("attack/attack-4a.png");
+                main22 = at2b.getImage();
+
+                ImageIcon at2c = new ImageIcon("attack/attack-4b.png");
+                main23 = at2c.getImage();
+            }
+            // chạy
+            if (right) {
+                ImageIcon mainra = new ImageIcon("run/run2a.png");
+                mainr = mainra.getImage();
+
+                ImageIcon mainrb = new ImageIcon("run/run2b.png");
+                mainr1 = mainrb.getImage();
+
+                ImageIcon mainrc = new ImageIcon("run/run2c.png");
+                mainr2 = mainrc.getImage();
+            }
+            if (left) {
+                ImageIcon mainra = new ImageIcon("run/run-2a.png");
+                mainr = mainra.getImage();
+
+                ImageIcon mainrb = new ImageIcon("run/run-2b.png");
+                mainr1 = mainrb.getImage();
+
+                ImageIcon mainrc = new ImageIcon("run/run-2c.png");
+                mainr2 = mainrc.getImage();
+            }
+        }
+        // diana
+        if (diana) {
+            // load nhân vật
+            if (right) {
+                ImageIcon main1 = new ImageIcon("attack/attack6.png");
+                main = main1.getImage();
+
+                ImageIcon main0a = new ImageIcon("character/character2a.png");
+                main0 = main0a.getImage();
+            }
+            if (left) {
+                ImageIcon main1 = new ImageIcon("attack/attack-6.png");
+                main = main1.getImage();
+
+                ImageIcon main0a = new ImageIcon("character/character-2a.png");
+                main0 = main0a.getImage();
+            }
+            // load tấn công
+            if (right) {
+                ImageIcon at1a = new ImageIcon("attack/attack5.png");
+                main11 = at1a.getImage();
+
+                ImageIcon at1b = new ImageIcon("attack/attack5a.png");
+                main12 = at1b.getImage();
+
+                ImageIcon at1c = new ImageIcon("attack/attack5b.png");
+                main13 = at1c.getImage();
+
+                ImageIcon at2a = new ImageIcon("attack/attack6.png");
+                main21 = at2a.getImage();
+
+                ImageIcon at2b = new ImageIcon("attack/attack6a.png");
+                main22 = at2b.getImage();
+
+                ImageIcon at2c = new ImageIcon("attack/attack6b.png");
+                main23 = at2c.getImage();
+            }
+            if (left) {
+                ImageIcon at1a = new ImageIcon("attack/attack-5.png");
+                main11 = at1a.getImage();
+
+                ImageIcon at1b = new ImageIcon("attack/attack-5a.png");
+                main12 = at1b.getImage();
+
+                ImageIcon at1c = new ImageIcon("attack/attack-5b.png");
+                main13 = at1c.getImage();
+
+                ImageIcon at2a = new ImageIcon("attack/attack-6.png");
+                main21 = at2a.getImage();
+
+                ImageIcon at2b = new ImageIcon("attack/attack-6a.png");
+                main22 = at2b.getImage();
+
+                ImageIcon at2c = new ImageIcon("attack/attack-6b.png");
+                main23 = at2c.getImage();
+            }
+            // chạy
+            if (right) {
+                ImageIcon mainra = new ImageIcon("run/run3a.png");
+                mainr = mainra.getImage();
+
+                ImageIcon mainrb = new ImageIcon("run/run3b.png");
+                mainr1 = mainrb.getImage();
+
+                ImageIcon mainrc = new ImageIcon("run/run3c.png");
+                mainr2 = mainrc.getImage();
+
+            }
+            if (left) {
+                ImageIcon mainra = new ImageIcon("run/run-3a.png");
+                mainr = mainra.getImage();
+
+                ImageIcon mainrb = new ImageIcon("run/run-3b.png");
+                mainr1 = mainrb.getImage();
+
+                ImageIcon mainrc = new ImageIcon("run/run-3c.png");
+                mainr2 = mainrc.getImage();
+            }
         }
     }
 
@@ -200,6 +396,241 @@ public class Board extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         doDrawing(g);
+    }
+
+    // tấn công meliodas
+    private void attackcrt1(Graphics g) {
+        if (attack1) {
+            at1 += 2;
+            if (right) {
+                if (at1 > 0 && at1 < 16) {
+                    g.drawImage(main12, x - 10, y, this);
+                }
+            }
+            if (left) {
+                if (at1 > 0 && at1 < 16) {
+                    g.drawImage(main12, x, y, this);
+                }
+            }
+            if (at1 > 15) {
+                if (at1 >= 30) {
+                    at1 = 0;
+                    attack1 = false;
+                }
+                g.drawImage(main13, x - 12, y - 20, this);
+            }
+        } else if (attack2) {
+            at2 += 2;
+            if (right) {
+                if (at2 > 0 && at2 < 16) {
+                    g.drawImage(main21, x - 15, y - 30, this);
+                }
+                if (at2 > 15) {
+                    if (at2 >= 30) {
+                        at2 = 0;
+                        attack2 = false;
+                    }
+                    g.drawImage(main23, x - 10, y - 30, this);
+                }
+            }
+            if (left) {
+                if (at2 > 0 && at2 < 16) {
+                    g.drawImage(main21, x - 5, y - 30, this);
+                }
+                if (at2 > 15) {
+                    if (at2 >= 30) {
+                        at2 = 0;
+                        attack2 = false;
+                    }
+                    g.drawImage(main23, x - 25, y - 30, this);
+                }
+            }
+        } else {
+            if (!run) {
+                g.drawImage(main, x, y, this);
+            }
+        }
+    }
+
+    // tấn công escanor
+    private void attackcrt2(Graphics g) {
+        if (attack1) {
+            at1 += 2;
+            if (right) {
+                if (at1 > 0 && at1 < 16) {
+                    g.drawImage(main12, x - 10, y + 1, this);
+                }
+                if (at1 > 15) {
+                    if (at1 >= 30) {
+                        at1 = 0;
+                        attack1 = false;
+                    }
+                    g.drawImage(main13, x - 10, y - 20, this);
+                }
+            }
+            if (left) {
+                if (at1 > 0 && at1 < 16) {
+                    g.drawImage(main12, x - 10, y + 1, this);
+                }
+                if (at1 > 15) {
+                    if (at1 >= 30) {
+                        at1 = 0;
+                        attack1 = false;
+                    }
+                    g.drawImage(main13, x - 20, y - 20, this);
+                }
+            }
+
+            // } else if (attack2) {
+            // at2 += 2;
+            // if (right) {
+            // if (at2 > 0 && at2 < 16) {
+            // g.drawImage(main21, x - 13, y - 11, this);
+            // }
+            // if (at2 > 15 && at2 < 31) {
+            // g.drawImage(main22, x - 13, y - 17, this);
+            // }
+            // if (at2 > 30) {
+            // if (at2 >= 45) {
+            // at2 = 0;
+            // attack2 = false;
+            // }
+            // g.drawImage(main23, x - 4, y - 20, this);
+            // }
+            // }
+            // if (left) {
+            // if (at2 > 0 && at2 < 16) {
+            // g.drawImage(main21, x - 5, y - 11, this);
+            // }
+            // if (at2 > 15 && at2 < 31) {
+            // g.drawImage(main22, x - 14, y - 17, this);
+            // }
+            // if (at2 > 30) {
+            // if (at2 >= 45) {
+            // at2 = 0;
+            // attack2 = false;
+            // }
+            // g.drawImage(main23, x - 1, y - 20, this);
+            // }
+            // }
+        } else {
+            if (!run) {
+                g.drawImage(main, x - 4, y - 4, this);
+            }
+        }
+    }
+
+    // tấn công diana
+    private void attackcrt3(Graphics g) {
+        if (attack1) {
+            at1 += 2;
+            if (right) {
+                if (at1 > 0 && at1 < 16) {
+                    g.drawImage(main11, x - 10, y - 4, this);
+                }
+                if (at1 > 15 && at1 < 31) {
+                    g.drawImage(main12, x + 2, y, this);
+                }
+                if (at1 > 30) {
+                    if (at1 >= 45) {
+                        at1 = 0;
+                        attack1 = false;
+                    }
+                    g.drawImage(main13, x + 1, y - 11, this);
+                }
+            }
+            if (left) {
+                if (at1 > 0 && at1 < 16) {
+                    g.drawImage(main11, x - 2, y - 4, this);
+                }
+                if (at1 > 15 && at1 < 31) {
+                    g.drawImage(main12, x - 18, y, this);
+                }
+                if (at1 > 30) {
+                    if (at1 >= 45) {
+                        at1 = 0;
+                        attack1 = false;
+                    }
+                    g.drawImage(main13, x - 19, y - 11, this);
+                }
+            }
+
+        } else if (attack2) {
+            at2 += 2;
+            if (right) {
+                if (at2 > 0 && at2 < 16) {
+                    g.drawImage(main22, x - 5, y - 4, this);
+                }
+                if (at2 > 15) {
+                    if (at2 >= 30) {
+                        at2 = 0;
+                        attack2 = false;
+                    }
+                    g.drawImage(main23, x - 1, y - 8, this);
+                }
+            }
+            if (left) {
+                if (at2 > 0 && at2 < 16) {
+                    g.drawImage(main22, x - 5, y - 4, this);
+                }
+                if (at2 > 15) {
+                    if (at2 >= 30) {
+                        at2 = 0;
+                        attack2 = false;
+                    }
+                    g.drawImage(main23, x - 13, y - 8, this);
+                }
+            }
+        } else {
+            if (!run) {
+                g.drawImage(main, x, y, this);
+            }
+        }
+    }
+
+    private void Characterrun(Graphics g) {
+        if (meliodas) {
+            if (r > 0 && r < 10) {
+                g.drawImage(mainr, x, y - 2, this);
+            }
+            if (r > 9 && r < 20) {
+                g.drawImage(mainr1, x, y - 2, this);
+            }
+            if (r > 19) {
+                if (r > 30) {
+                    r = 0;
+                }
+                g.drawImage(mainr2, x, y - 2, this);
+            }
+        }
+        if (escanor) {
+            if (r > 0 && r < 10) {
+                g.drawImage(mainr, x, y - 2, this);
+            }
+            if (r > 9 && r < 20) {
+                g.drawImage(mainr1, x, y - 2, this);
+            }
+            if (r > 19) {
+                if (r > 30) {
+                    r = 0;
+                }
+                g.drawImage(mainr2, x, y - 2, this);
+            }
+        }
+        if (diana) {
+            if (r > 0 && r < 10) {
+                g.drawImage(mainr, x, y - 2, this);
+            }
+            if (r > 9 && r < 20) {
+                g.drawImage(mainr1, x, y - 2, this);
+            }
+            if (r > 19) {
+                if (r > 30) {
+                    r = 0;
+                }
+                g.drawImage(mainr2, x, y - 2, this);
+            }
+        }
     }
 
     private void doDrawing(Graphics g) {
@@ -239,82 +670,50 @@ public class Board extends JPanel implements ActionListener {
                         g.drawImage(monster1, monster_x[z], monster_y[z], this);
                     }
                 }
+                // chạy
+                if (run) {
+                    x1 = x;
+                    y1 = y;
+                    r += 5;
+                    Characterrun(g);
+                }
                 // nhân vật
                 if (meliodas) {
-                    if (attack1) {
-                        at1 += 1;
-                        // if (at1 > 0 && at1 < 11) {
-                        // g.drawImage(main11, x, y, this);
-                        // }
-                        if (at1 > 0 && at1 < 16) {
-                            g.drawImage(main12, x - 10, y, this);
-                        }
-                        if (at1 > 15 && at1 < 31) {
-                            if (at1 == 30) {
-                                at1 = 0;
-                                attack1 = false;
-                            }
-                            g.drawImage(main13, x - 12, y - 20, this);
-                        }
-                    } else if (attack2) {
-                        at2 += 1;
-                        if (at2 > 0 && at2 < 11) {
-                            g.drawImage(main21, x - 15, y - 30, this);
-                        }
-                        // if (at2 > 10 && at2 < 21) {
-                        // g.drawImage(main22, x - 5, y - 10, this);
-                        // }
-                        if (at2 > 10 && at2 < 21) {
-                            if (at2 == 20) {
-                                at2 = 0;
-                                attack2 = false;
-                            }
-                            g.drawImage(main23, x - 10, y - 30, this);
-                        }
-                    } else {
-                        g.drawImage(main, x, y, this);
-                    }
+                    attackcrt1(g);
                 }
-                if (nv2) {
-                    if (attack1) {
-                        at1 += 1;
-                        // if (at1 > 0 && at1 < 11) {
-                        // g.drawImage(main11, x, y, this);
-                        // }
-                        if (at1 > 0 && at1 < 16) {
-                            g.drawImage(main12, x - 10, y, this);
-                        }
-                        if (at1 > 15 && at1 < 31) {
-                            if (at1 == 30) {
-                                at1 = 0;
-                                attack1 = false;
-                            }
-                            g.drawImage(main13, x - 12, y - 20, this);
-                        }
-                    } else if (attack2) {
-                        at2 += 1;
-                        if (at2 > 0 && at2 < 11) {
-                            g.drawImage(main21, x - 15, y - 30, this);
-                        }
-                        // if (at2 > 10 && at2 < 21) {
-                        // g.drawImage(main22, x - 5, y - 10, this);
-                        // }
-                        if (at2 > 10 && at2 < 21) {
-                            if (at2 == 20) {
-                                at2 = 0;
-                                attack2 = false;
-                            }
-                            g.drawImage(main23, x - 10, y - 30, this);
-                        }
-                    } else {
-                        g.drawImage(main, x, y, this);
+                if (escanor) {
+                    attackcrt2(g);
+                }
+                if (diana) {
+                    attackcrt3(g);
+                }
+                if (x == x1 && y == y1) {
+                    x2 += 1;
+                    if (x2 > 10) {
+                        x2 = 0;
+                        run = false;
                     }
                 }
             }
             Toolkit.getDefaultToolkit().sync();
 
         } else {
-
+            // chết
+            if (bando1) {
+                g.drawImage(map1, 0, 0, this);
+            }
+            if (bando2) {
+                g.drawImage(map2, 0, 0, this);
+            }
+            if (bando3) {
+                g.drawImage(map3, 0, 0, this);
+            }
+            if (right) {
+                g.drawImage(main0, x - 5, y + 10, this);
+            }
+            if (left) {
+                g.drawImage(main0, x - 15, y + 10, this);
+            }
             gameOver(g);
         }
     }
@@ -382,9 +781,9 @@ public class Board extends JPanel implements ActionListener {
         g.setFont(meli);
         g.drawString(me, 250, 210);
         // nv2
-        String nv2a = "nv2";
+        String nv2a = "Escanor";
         Font nv2b = new Font("Helvetica", Font.BOLD, 20);
-        if (nv2) {
+        if (escanor) {
             g.setColor(Color.red);
         } else {
             g.setColor(Color.white);
@@ -392,9 +791,9 @@ public class Board extends JPanel implements ActionListener {
         g.setFont(nv2b);
         g.drawString(nv2a, 250, 260);
         // nv3
-        String nv3a = "nv3";
+        String nv3a = "Diana";
         Font nv3b = new Font("Helvetica", Font.BOLD, 20);
-        if (nv3) {
+        if (diana) {
             g.setColor(Color.red);
         } else {
             g.setColor(Color.white);
@@ -525,18 +924,18 @@ public class Board extends JPanel implements ActionListener {
                 }
                 if (key == KeyEvent.VK_ENTER && ymn == 190) {
                     meliodas = true;
-                    nv2 = false;
-                    nv3 = false;
+                    escanor = false;
+                    diana = false;
                 }
                 if (key == KeyEvent.VK_ENTER && ymn == 240) {
                     meliodas = false;
-                    nv2 = true;
-                    nv3 = false;
+                    escanor = true;
+                    diana = false;
                 }
                 if (key == KeyEvent.VK_ENTER && ymn == 290) {
                     meliodas = false;
-                    nv2 = false;
-                    nv3 = true;
+                    escanor = false;
+                    diana = true;
                 }
             }
             // trong menu
@@ -552,8 +951,8 @@ public class Board extends JPanel implements ActionListener {
                 if (key == KeyEvent.VK_RIGHT && ymn == 180) {
                     menu = false;
                     start = true;
-                    x = -DOT_SIZE;
-                    y = 0;
+                    x = 36 - DOT_SIZE;
+                    y = 532;
                 }
                 if (key == KeyEvent.VK_RIGHT && ymn == 230) {
                     menu = false;
@@ -571,6 +970,11 @@ public class Board extends JPanel implements ActionListener {
             }
             // vào game
             if (start && menu == false) {
+                // lấy vị trí
+                if (key == KeyEvent.VK_P) {
+                    System.out.println(x);
+                    System.out.println(y);
+                }
                 // tấn công
                 if (key == KeyEvent.VK_T) {
                     attack1 = true;
@@ -582,20 +986,28 @@ public class Board extends JPanel implements ActionListener {
                 if (key == KeyEvent.VK_E) {
                     System.exit(0);
                 }
+                // chết
+                if (key == KeyEvent.VK_U) {
+                    inGame = false;
+                }
+                // hồi sinh
+                if (key == KeyEvent.VK_I) {
+                    inGame = true;
+                }
                 // ra ngoài menu
                 if (key == KeyEvent.VK_ESCAPE) {
                     menu = true;
                     start = false;
                 }
                 // di chuyển giữa các map
-                if (key == KeyEvent.VK_LEFT && x == 0 && y == 0 && bando1) {
+                if (key == KeyEvent.VK_LEFT && x == 0 && y == 412 && bando1) {
                     bando1 = false;
                     bando2 = true;
                     x = B_WIDTH - 20 + DOT_SIZE;
                     locateMonster();
                 }
 
-                if (key == KeyEvent.VK_RIGHT && x == B_WIDTH - 20 && y == 0 && bando2) {
+                if (key == KeyEvent.VK_RIGHT && x == B_WIDTH - 20 && y == 412 && bando2) {
                     bando1 = true;
                     bando2 = false;
                     x = -DOT_SIZE;
@@ -616,22 +1028,31 @@ public class Board extends JPanel implements ActionListener {
                     locateMonster();
                 }
                 // di chuyển nhân vật
-                if (key == KeyEvent.VK_LEFT) {
+                else if (key == KeyEvent.VK_LEFT && left1) {
                     x -= DOT_SIZE;
+                    run = true;
+                    left = true;
+                    right = false;
+                    loadcharacter();
                 }
 
-                if (key == KeyEvent.VK_RIGHT) {
+                else if (key == KeyEvent.VK_RIGHT && right1) {
                     x += DOT_SIZE;
+                    run = true;
+                    left = false;
+                    right = true;
+                    loadcharacter();
                 }
 
-                if (key == KeyEvent.VK_UP) {
+                else if (key == KeyEvent.VK_UP && up) {
                     y -= DOT_SIZE;
+                    run = true;
                 }
 
-                if (key == KeyEvent.VK_DOWN) {
+                else if (key == KeyEvent.VK_DOWN && down) {
                     y += DOT_SIZE;
+                    run = true;
                 }
-
             }
         }
     }
